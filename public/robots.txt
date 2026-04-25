@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://shashwatholidays.in/sitemap.xml
