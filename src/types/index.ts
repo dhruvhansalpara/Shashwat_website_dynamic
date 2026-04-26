@@ -3,6 +3,8 @@ export interface Destination {
   name: string;
   image: string;
   tourCount: number;
+  packageCount?: number;
+  slug?: string;
   /** Exact `Tour.searchRegion` — used for /tours?region=… so only that state’s packages show. */
   toursRegion: string;
 }
@@ -23,6 +25,7 @@ export interface Tour {
   image: string;
   category: string;
   isPopular?: boolean;
+  destination_ids?: string[];
   description?: string;
   highlights?: string[];
   itinerary?: {

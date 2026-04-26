@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { tours as staticTours } from '../data/tours';
 import { Filter, Search, Calendar, Users, X, MapPin } from 'lucide-react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { filterToursByDestinationQuery, filterToursByExactRegion } from '../features/tours/utils/search';
+import { filterToursByDestinationQuery, filterToursByExactRegion, filterToursByDestinationId } from '../features/tours/utils/search';
 import { TOUR_CATEGORIES } from '../features/tours/constants';
 import TourCard from '../features/tours/components/TourCard';
 import { formatSearchDate } from '../features/tours/utils';
@@ -33,15 +33,17 @@ export default function ToursPage() {
 
   const regionQ = searchParams.get('region')?.trim() ?? '';
   const destinationQ = searchParams.get('destination')?.trim() ?? '';
+  const destinationIdQ = searchParams.get('destinationId')?.trim() ?? '';
   const dateQ = searchParams.get('date')?.trim() ?? '';
   const travelersQ = searchParams.get('travelers')?.trim() ?? '';
 
-  const hasSearchContext = Boolean(regionQ || destinationQ || dateQ || travelersQ);
+  const hasSearchContext = Boolean(regionQ || destinationQ || destinationIdQ || dateQ || travelersQ);
 
   const filteredBySearch = useMemo(() => {
+    if (destinationIdQ) return filterToursByDestinationId(allTours, destinationIdQ);
     if (regionQ) return filterToursByExactRegion(allTours, regionQ);
     return filterToursByDestinationQuery(allTours, destinationQ);
-  }, [regionQ, destinationQ, allTours]);
+  }, [regionQ, destinationQ, destinationIdQ, allTours]);
 
   const filteredTours =
     activeCategory === 'All'

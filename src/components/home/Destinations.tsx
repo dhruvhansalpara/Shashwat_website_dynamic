@@ -37,15 +37,20 @@ export default function Destinations() {
   }, []);
 
   const getDynamicTourCount = (dest: Destination) => {
-    // Count packages that match this destination's toursRegion or name
-    const region = (dest.toursRegion || '').toLowerCase().trim();
-    const name = (dest.name || '').toLowerCase().trim();
-    
+    // Count packages that have this destination's ID in their destination_ids
     const count = packages.filter(pkg => {
+      if (pkg.destination_ids && pkg.destination_ids.includes(dest.id)) {
+        return true;
+      }
+      
+      const region = (dest.toursRegion || '').toLowerCase().trim();
+      const name = (dest.name || '').toLowerCase().trim();
       const pkgRegion = (pkg.searchRegion || '').toLowerCase().trim();
+      
       return pkgRegion === region || pkgRegion === name;
     }).length;
 
+    console.log(`Debug Destination Count [${dest.name}]: ${count}`);
     return count > 0 ? count : (dest.tourCount || 0);
   };
 
@@ -124,7 +129,7 @@ export default function Destinations() {
                       className="mt-5"
                     >
                       <Link
-                        to={`/tours?region=${encodeURIComponent(destination.toursRegion || destination.name || '')}`}
+                        to={`/tours?destinationId=${destination.id}&region=${encodeURIComponent(destination.toursRegion || destination.name || '')}`}
                         className="inline-flex w-fit items-center gap-2 rounded-full border border-white/25 bg-black/20 px-4 py-2 text-sm font-black text-white backdrop-blur-sm transition-all hover:bg-brand-secondary hover:border-brand-secondary hover:scale-105"
                       >
                         <Ticket className="h-4 w-4 text-brand-primary group-hover:text-white transition-colors" />

@@ -138,20 +138,18 @@ export default function EnquiryModal({
       return;
     }
 
-    if (!WEBHOOK_URL) {
-      setStatusType('error');
-      setStatusMessage(ENQUIRY_STATUS_COPY.genericError);
-      return;
-    }
-
     setIsSubmitting(true);
 
     try {
       const payload = buildEnquiryPayload(values, enquiryType, isCarEnquiry);
-      await submitEnquiry(WEBHOOK_URL, payload);
-      setStatusType('success');
-      setStatusMessage(ENQUIRY_STATUS_COPY.success);
-      setValues(INITIAL_ENQUIRY_VALUES);
+      const success = await submitEnquiry(WEBHOOK_URL, payload);
+      if (success) {
+        setStatusType('success');
+        setStatusMessage(ENQUIRY_STATUS_COPY.success);
+        setValues(INITIAL_ENQUIRY_VALUES);
+      } else {
+        throw new Error('Submission failed');
+      }
     } catch (error) {
       console.error('Failed to submit enquiry:', error);
       setStatusType('error');

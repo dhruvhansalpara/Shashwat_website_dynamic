@@ -17,6 +17,11 @@ function buildTourSearchBlob(tour: Tour): string {
   return parts.join(' ').toLowerCase();
 }
 
+export function filterToursByDestinationId(tours: Tour[], destinationId: string): Tour[] {
+  if (!destinationId) return tours;
+  return tours.filter(t => t.destination_ids && t.destination_ids.includes(destinationId));
+}
+
 /** 
  * Geography tokens need at least 3 characters (except full exact match) 
  * to prevent small words like "in" from matching "India".

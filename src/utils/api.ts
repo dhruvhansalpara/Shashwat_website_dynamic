@@ -89,3 +89,9 @@ export async function deleteCar(id: string) {
   if (!response.ok) throw new Error('Failed to delete car');
   return response.json();
 }
+
+export async function fetchInquiries() {
+  const response = await fetch('/api/inquiries');
+  if (!response.ok) throw new Error('Failed to fetch inquiries');
+  return response.json();
+}

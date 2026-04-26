@@ -43,9 +43,25 @@ export function buildEnquiryPayload(
   };
 }
 
-export async function submitEnquiry(webhookUrl: string, payload: ReturnType<typeof buildEnquiryPayload>) {
-  let submitted = false;
+export async function submitEnquiry(webhookUrl: string | undefined, payload: ReturnType<typeof buildEnquiryPayload>): Promise<boolean> {
+  let dbSuccess = false;
+  // Always submit to internal DB first
+  try {
+    const response = await fetch('/api/inquiries', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+    dbSuccess = response.ok;
+  } catch (dbError) {
+    console.error('Failed to save enquiry to internal DB:', dbError);
+  }
 
+  if (!webhookUrl) return dbSuccess;
+
+  let webhookSubmitted = false;
   try {
     const response = await fetch(webhookUrl, {
       method: 'POST',
@@ -54,19 +70,26 @@ export async function submitEnquiry(webhookUrl: string, payload: ReturnType<type
       },
       body: JSON.stringify(payload),
     });
-    submitted = response.ok;
+    webhookSubmitted = response.ok;
   } catch (primaryError) {
     console.warn('Primary webhook request failed, trying no-cors fallback.', primaryError);
   }
 
-  if (!submitted) {
-    await fetch(webhookUrl, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {
-        'Content-Type': 'text/plain;charset=utf-8',
-      },
-      body: JSON.stringify(payload),
-    });
+  if (!webhookSubmitted) {
+    try {
+      await fetch(webhookUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8',
+        },
+        body: JSON.stringify(payload),
+      });
+      webhookSubmitted = true;
+    } catch (fallbackError) {
+      console.error('Webhook fallback failed:', fallbackError);
+    }
   }
+
+  return dbSuccess || webhookSubmitted;
 }

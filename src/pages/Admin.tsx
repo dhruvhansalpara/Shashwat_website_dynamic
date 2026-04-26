@@ -4,21 +4,22 @@ import { motion, AnimatePresence } from 'motion/react';
 import { 
   Plus, Trash2, Edit2, Save, X, LayoutDashboard, MapPin, 
   Package, Image as ImageIcon, Star, Clock, Tag, ChevronDown, ChevronUp, Check,
-  Car as CarIcon
+  Car as CarIcon, MessageSquare
 } from 'lucide-react';
 import { 
   fetchDestinations, saveDestination, deleteDestination, 
   fetchPackages, savePackage, deletePackage,
-  fetchCars, saveCar, deleteCar
+  fetchCars, saveCar, deleteCar, fetchInquiries
 } from '../utils/api';
 import { normalizeImagePath } from '../utils/travelImages';
 import { Destination, Tour, Car } from '../types';
 
 export default function AdminPage() {
-  const [activeTab, setActiveTab] = useState<'destinations' | 'packages' | 'cars'>('destinations');
+  const [activeTab, setActiveTab] = useState<'destinations' | 'packages' | 'cars' | 'inquiries'>('destinations');
   const [destinations, setDestinations] = useState<Destination[]>([]);
   const [packages, setPackages] = useState<Tour[]>([]);
   const [cars, setCars] = useState<Car[]>([]);
+  const [inquiries, setInquiries] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
@@ -49,10 +50,11 @@ export default function AdminPage() {
   async function loadData() {
     setLoading(true);
     try {
-      const [d, p, c] = await Promise.all([fetchDestinations(), fetchPackages(), fetchCars()]);
+      const [d, p, c, i] = await Promise.all([fetchDestinations(), fetchPackages(), fetchCars(), fetchInquiries()]);
       setDestinations(d);
       setPackages(p);
       setCars(c);
+      setInquiries(i);
     } catch (err) {
       console.error(err);
       setMessage({ type: 'error', text: 'Failed to load data from database' });
@@ -195,7 +197,8 @@ export default function AdminPage() {
             {[
               { id: 'destinations', label: 'Destinations' },
               { id: 'packages', label: 'Packages' },
-              { id: 'cars', label: 'Car Rentals' }
+              { id: 'cars', label: 'Car Rentals' },
+              { id: 'inquiries', label: 'Inquiries' }
             ].map(tab => (
               <button 
                 key={tab.id}
@@ -546,7 +549,7 @@ export default function AdminPage() {
               </div>
             </div>
           </div>
-        ) : (
+        ) : activeTab === 'cars' ? (
           <div className="space-y-8">
             {/* Car Form */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
@@ -645,7 +648,38 @@ export default function AdminPage() {
               </table>
             </div>
           </div>
-        )}
+        ) : (
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+             <table className="w-full text-left">
+                <thead className="bg-gray-50 border-b border-gray-100">
+                  <tr>
+                    <th className="px-6 py-4 text-sm font-semibold text-gray-600">Guest Details</th>
+                    <th className="px-6 py-4 text-sm font-semibold text-gray-600">Inquiry Type</th>
+                    <th className="px-6 py-4 text-sm font-semibold text-gray-600">Received Date</th>
+                    <th className="px-6 py-4 text-sm font-semibold text-gray-600">Package Ref/Price</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {inquiries.map((inq: any) => (
+                    <tr key={inq.id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4">
+                        <div className="font-semibold text-gray-900">{inq.name}</div>
+                        <div className="text-sm text-gray-500">{inq.email} | {inq.phone}</div>
+                        <div className="text-sm text-gray-600 mt-1">{inq.message}</div>
+                      </td>
+                      <td className="px-6 py-4 text-gray-600 capitalize">{inq.inquiryType || 'General'}</td>
+                      <td className="px-6 py-4 text-gray-600">{new Date(inq.createdAt).toLocaleDateString()}</td>
+                      <td className="px-6 py-4 text-gray-600">
+                        <div>{inq.packageId}</div>
+                        <div className="font-semibold text-blue-600">₹{inq.packagePrice}</div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+             </table>
+          </div>
+        )
+        }
       </div>
     </div>
   );
