@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Mail, Phone, MapPin, Send, Globe, MessageSquare } from 'lucide-react';
 import { motion } from 'motion/react';
 import {
@@ -11,7 +12,21 @@ import {
 
 export default function ContactPage() {
   return (
-    <div className="page-shell pt-32 pb-24">
+    <>
+      <Helmet>
+        <title>Contact Shashwat Holidays | Get Travel Quotes & Support</title>
+        <meta name="description" content="Contact Shashwat Holidays for personalized travel planning. Get instant quotes for tour packages and car rentals. Call us at +91-9876543210 or email for expert travel assistance." />
+        <meta property="og:title" content="Contact Shashwat Holidays | Get Travel Quotes & Support" />
+        <meta property="og:description" content="Contact Shashwat Holidays for personalized travel planning. Get instant quotes for tour packages and car rentals. Call us at +91-9876543210 or email for expert travel assistance." />
+        <meta property="og:image" content="https://shashwatholidays.in/shashwat-logo-new.png" />
+        <meta property="og:url" content="https://shashwatholidays.in/contact" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Contact Shashwat Holidays | Get Travel Quotes & Support" />
+        <meta name="twitter:description" content="Contact Shashwat Holidays for personalized travel planning. Get instant quotes for tour packages and car rentals. Call us at +91-9876543210 or email for expert travel assistance." />
+        <meta name="twitter:image" content="https://shashwatholidays.in/shashwat-logo-new.png" />
+      </Helmet>
+      <div className="page-shell pt-32 pb-24">
       <div className="site-container">
         <div className="text-center mb-20">
           <span className="text-brand-primary font-bold text-sm uppercase tracking-widest mb-4 block">
@@ -114,5 +129,6 @@ export default function ContactPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

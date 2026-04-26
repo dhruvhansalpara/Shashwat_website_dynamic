@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { motion } from 'motion/react';
 import { Shield, Target, Users, Globe, Award, Heart, CheckCircle2, Headphones, BadgeCheck, MapPinned, Sparkles, Compass, CalendarRange } from 'lucide-react';
 
@@ -48,7 +49,21 @@ const storySteps = [
 
 export default function About() {
   return (
-    <div className="page-shell pt-20">
+    <>
+      <Helmet>
+        <title>About Shashwat Holidays | Premium Travel Agency in India</title>
+        <meta name="description" content="Learn about Shashwat Holidays, your trusted travel partner for premium tours and car rentals across India. 10+ years of experience in creating unforgettable travel experiences." />
+        <meta property="og:title" content="About Shashwat Holidays | Premium Travel Agency in India" />
+        <meta property="og:description" content="Learn about Shashwat Holidays, your trusted travel partner for premium tours and car rentals across India. 10+ years of experience in creating unforgettable travel experiences." />
+        <meta property="og:image" content="https://shashwatholidays.in/shashwat-logo-new.png" />
+        <meta property="og:url" content="https://shashwatholidays.in/about" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="About Shashwat Holidays | Premium Travel Agency in India" />
+        <meta name="twitter:description" content="Learn about Shashwat Holidays, your trusted travel partner for premium tours and car rentals across India. 10+ years of experience in creating unforgettable travel experiences." />
+        <meta name="twitter:image" content="https://shashwatholidays.in/shashwat-logo-new.png" />
+      </Helmet>
+      <div className="page-shell pt-20">
       {/* Hero Section */}
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden bg-gray-900">
         <img 
@@ -283,5 +298,6 @@ export default function About() {
       </section>
 
     </div>
+    </>
   );
 }

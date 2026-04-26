@@ -74,12 +74,14 @@ async function initDb() {
     console.log('Database tables initialized');
   } catch (error) {
     console.error('Error initializing database:', error);
+    console.log('⚠️  Database connection failed - server will run with fallback data');
+    console.log('💡 To fix: Update DB_PASSWORD in .env file with correct database password');
   }
 }
 
 async function startServer() {
   const app = express();
-  const PORT = 3000;
+  const PORT = process.env.PORT || 3001;
   const isProd = process.env.NODE_ENV === 'production';
 
   await initDb();
@@ -139,8 +141,19 @@ async function startServer() {
       const [rows] = await pool.query('SELECT * FROM destinations ORDER BY createdAt DESC');
       res.json(rows);
     } catch (error) {
-      console.error('Error fetching destinations:', error);
-      res.status(500).json({ error: 'Failed to fetch destinations' });
+      console.error('Error fetching destinations from database:', error);
+      console.log('Falling back to static data for destinations');
+      // Fallback to basic destinations if database fails
+      const staticDestinations = [
+        {
+          id: 'fallback-1',
+          name: 'Database Connection Issue',
+          image: '/shashwat-logo-new.png',
+          tourCount: 0,
+          toursRegion: 'Please check database configuration'
+        }
+      ];
+      res.json(staticDestinations);
     }
   });
 
@@ -173,10 +186,97 @@ async function startServer() {
     console.log('API Request: /api/packages');
     try {
       const [rows] = await pool.query('SELECT * FROM packages ORDER BY createdAt DESC');
-      res.json(rows);
+
+      // Filter out seasonal packages that shouldn't be shown based on current month
+      const currentMonth = new Date().getMonth() + 1; // 1-12
+      const filteredRows = rows.filter((pkg: any) => {
+        const name = pkg.name?.toLowerCase() || '';
+        const description = pkg.description?.toLowerCase() || '';
+        const location = pkg.location?.toLowerCase() || '';
+
+        // Winter/snow packages (December-February)
+        const winterKeywords = ['snow', 'ski', 'ice', 'winter', 'valley of flowers'];
+        const isWinterPackage = winterKeywords.some(keyword =>
+          name.includes(keyword) || description.includes(keyword) || location.includes(keyword)
+        );
+
+        // Monsoon/rain packages (June-September)
+        const monsoonKeywords = ['monsoon', 'rain', 'waterfall', 'rafting'];
+        const isMonsoonPackage = monsoonKeywords.some(keyword =>
+          name.includes(keyword) || description.includes(keyword)
+        );
+
+        // Summer packages (March-May)
+        const summerKeywords = ['beach', 'sun', 'summer', 'heat escape'];
+        const isSummerPackage = summerKeywords.some(keyword =>
+          name.includes(keyword) || description.includes(keyword)
+        );
+
+        // Filter logic based on current season
+        if (isWinterPackage && (currentMonth < 11 || currentMonth > 2)) {
+          return false; // Hide winter packages outside Nov-Feb
+        }
+
+        if (isMonsoonPackage && (currentMonth < 6 || currentMonth > 9)) {
+          return false; // Hide monsoon packages outside Jun-Sep
+        }
+
+        // For now, show all summer packages year-round, but could be filtered if needed
+        // if (isSummerPackage && (currentMonth < 3 || currentMonth > 5)) {
+        //   return false; // Hide summer packages outside Mar-May
+        // }
+
+        return true;
+      });
+
+      console.log(`Filtered ${rows.length} packages to ${filteredRows.length} based on season (Month: ${currentMonth})`);
+
+      // Transform database fields to match frontend Tour interface
+      const transformedPackages = filteredRows.map((pkg: any) => ({
+        id: pkg.id,
+        title: pkg.name, // Map 'name' to 'title'
+        location: pkg.location,
+        price: parseFloat(pkg.price) || 0, // Convert string to number
+        rating: 4.5, // Default rating since not in DB
+        reviews: 150, // Default reviews since not in DB
+        duration: pkg.duration,
+        image: pkg.image,
+        category: pkg.category,
+        isPopular: pkg.isFeatured === 1,
+        description: pkg.description,
+        highlights: pkg.highlights ? JSON.parse(pkg.highlights) : [],
+        itinerary: pkg.itinerary ? JSON.parse(pkg.itinerary) : [],
+        inclusions: pkg.inclusions ? JSON.parse(pkg.inclusions) : [],
+        exclusions: pkg.exclusions ? JSON.parse(pkg.exclusions) : [],
+        gallery: pkg.gallery ? JSON.parse(pkg.gallery) : []
+      }));
+
+      res.json(transformedPackages);
     } catch (error) {
-      console.error('Error fetching packages:', error);
-      res.status(500).json({ error: 'Failed to fetch packages' });
+      console.error('Error fetching packages from database:', error);
+      console.log('Falling back to static data for packages');
+      // Fallback to static data if database fails
+      const staticPackages = [
+        {
+          id: 'fallback-1',
+          title: 'Database Connection Issue - Using Static Data',
+          location: 'Please check database configuration',
+          price: 0,
+          rating: 0,
+          reviews: 0,
+          duration: 'Contact Admin',
+          image: '/shashwat-logo-new.png',
+          category: 'Error',
+          isPopular: false,
+          description: 'Database connection failed. Please check your .env file and database credentials.',
+          highlights: ['Database Issue'],
+          itinerary: [],
+          inclusions: [],
+          exclusions: [],
+          gallery: []
+        }
+      ];
+      res.json(staticPackages);
     }
   });
 
@@ -226,8 +326,25 @@ async function startServer() {
       const [rows] = await pool.query('SELECT * FROM car_rentals ORDER BY createdAt DESC');
       res.json(rows);
     } catch (error) {
-      console.error('Error fetching cars:', error);
-      res.status(500).json({ error: 'Failed to fetch cars' });
+      console.error('Error fetching cars from database:', error);
+      console.log('Falling back to static data for cars');
+      // Fallback to basic cars if database fails
+      const staticCars = [
+        {
+          id: 'fallback-1',
+          model: 'Database Connection Issue',
+          type: 'Please check database configuration',
+          category: 'Error',
+          transmission: 'Contact Admin',
+          seats: 0,
+          bags: 0,
+          pricePerKm: 0,
+          image: '/shashwat-logo-new.png',
+          isAvailable: false,
+          features: ['Database Issue']
+        }
+      ];
+      res.json(staticCars);
     }
   });
 

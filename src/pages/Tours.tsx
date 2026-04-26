@@ -65,6 +65,15 @@ export default function ToursPage() {
       <Helmet>
         <title>{`${regionQ ? `Tour Packages in ${regionQ}` : destinationQ ? `Tours matching "${destinationQ}"` : 'All India Tour Packages'} | Shashwat Holidays`}</title>
         <meta name="description" content={`Find the best ${regionQ || destinationQ || 'domestic and international'} tour packages at Shashwat Holidays. Explore diverse destinations with our expert planning.`} />
+        <meta property="og:title" content={`${regionQ ? `Tour Packages in ${regionQ}` : destinationQ ? `Tours matching "${destinationQ}"` : 'All India Tour Packages'} | Shashwat Holidays`} />
+        <meta property="og:description" content={`Find the best ${regionQ || destinationQ || 'domestic and international'} tour packages at Shashwat Holidays. Explore diverse destinations with our expert planning.`} />
+        <meta property="og:image" content="https://shashwatholidays.in/shashwat-logo-new.png" />
+        <meta property="og:url" content={`https://shashwatholidays.in/tours${regionQ ? `?region=${regionQ}` : destinationQ ? `?destination=${destinationQ}` : ''}`} />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${regionQ ? `Tour Packages in ${regionQ}` : destinationQ ? `Tours matching "${destinationQ}"` : 'All India Tour Packages'} | Shashwat Holidays`} />
+        <meta name="twitter:description" content={`Find the best ${regionQ || destinationQ || 'domestic and international'} tour packages at Shashwat Holidays. Explore diverse destinations with our expert planning.`} />
+        <meta name="twitter:image" content="https://shashwatholidays.in/shashwat-logo-new.png" />
       </Helmet>
       <div className="site-container">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-12 gap-8">

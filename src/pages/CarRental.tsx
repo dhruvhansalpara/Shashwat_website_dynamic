@@ -54,6 +54,15 @@ export default function CarRentalPage() {
       <Helmet>
         <title>Premium Car Rental Services | Shashwat Holidays</title>
         <meta name="description" content="Safe and reliable car rental across Rajasthan and India. Book Sedans, SUVs, and luxury coaches with top-rated drivers." />
+        <meta property="og:title" content="Premium Car Rental Services | Shashwat Holidays" />
+        <meta property="og:description" content="Safe and reliable car rental across Rajasthan and India. Book Sedans, SUVs, and luxury coaches with top-rated drivers." />
+        <meta property="og:image" content="https://shashwatholidays.in/shashwat-logo-new.png" />
+        <meta property="og:url" content="https://shashwatholidays.in/car-rental" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Premium Car Rental Services | Shashwat Holidays" />
+        <meta name="twitter:description" content="Safe and reliable car rental across Rajasthan and India. Book Sedans, SUVs, and luxury coaches with top-rated drivers." />
+        <meta name="twitter:image" content="https://shashwatholidays.in/shashwat-logo-new.png" />
       </Helmet>
       <div className="site-container">
         <CarPageHero />

@@ -45,7 +45,7 @@ export default function Navbar() {
             <img
               src={BRAND_LOGO_PATH}
               alt="Shashwat Holidays"
-              className="h-14 lg:h-18 w-auto object-contain"
+              className="h-14 lg:h-16 w-auto object-contain"
             />
           </Link>
 

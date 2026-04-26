@@ -50,6 +50,15 @@ export default function Home() {
       <Helmet>
         <title>Shashwat Holidays | Best Tour Packages & Car Rentals in India</title>
         <meta name="description" content="Official website of Shashwat Holidays. Book premium domestic and international tour packages. Expert travel planning for Rajasthan, Kerala, and Bhutan." />
+        <meta property="og:title" content="Shashwat Holidays | Best Tour Packages & Car Rentals in India" />
+        <meta property="og:description" content="Official website of Shashwat Holidays. Book premium domestic and international tour packages. Expert travel planning for Rajasthan, Kerala, and Bhutan." />
+        <meta property="og:image" content="https://shashwatholidays.in/shashwat-logo-new.png" />
+        <meta property="og:url" content="https://shashwatholidays.in/" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Shashwat Holidays | Best Tour Packages & Car Rentals in India" />
+        <meta name="twitter:description" content="Official website of Shashwat Holidays. Book premium domestic and international tour packages. Expert travel planning for Rajasthan, Kerala, and Bhutan." />
+        <meta name="twitter:image" content="https://shashwatholidays.in/shashwat-logo-new.png" />
         <script type="application/ld+json">
           {JSON.stringify(schemaMarkup)}
         </script>
