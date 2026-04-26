@@ -25,7 +25,7 @@ export default function FAQPage() {
               <ChevronRight className="w-3 h-3" />
               <span className="text-brand-primary">Support Center</span>
             </nav>
-            <h1 className="text-4xl md:text-6xl font-display font-black text-[#05445E] tracking-tight">
+            <h1 className="text-4xl md:text-6xl font-display font-black text-brand-dark tracking-tight">
               Frequently Asked <span className="text-brand-primary italic">Questions</span>
             </h1>
           </div>

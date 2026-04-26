@@ -17,10 +17,16 @@ export default function DestinationsPage() {
     const loadDestinations = async () => {
       try {
         const dbDestinations = await fetchDestinations();
-        setDestinations(dbDestinations || []);
+        
+        // If DB has data, use it. Otherwise, use static data.
+        if (dbDestinations && dbDestinations.length > 0) {
+          setDestinations(dbDestinations);
+        } else {
+          setDestinations(staticDestinations);
+        }
       } catch (err) {
-        console.error('Failed to fetch destinations', err);
-        setDestinations([]);
+        console.error('Failed to fetch destinations, falling back to static data', err);
+        setDestinations(staticDestinations);
       } finally {
         setLoading(false);
       }
@@ -63,11 +69,11 @@ export default function DestinationsPage() {
                 className="group relative h-[420px] overflow-hidden rounded-[32px] shadow-lg shadow-black/5"
               >
                 <Link
-                  to={`/tours?region=${encodeURIComponent(destination.toursRegion)}`}
+                  to={`/tours?region=${encodeURIComponent(destination.toursRegion || '')}`}
                   className="absolute inset-0 block focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-primary/60 rounded-[32px]"
                 >
                   <SafeImage
-                    src={destination.image || getDestinationDisplayImage(destination)}
+                    src={getDestinationDisplayImage(destination)}
                     fallbackSrc={getDestinationFallbackImage(destination)}
                     alt={destination.name}
                     className="h-full w-full transition-transform duration-700 group-hover:scale-110"
@@ -76,7 +82,7 @@ export default function DestinationsPage() {
 
                   <div className="absolute inset-0 flex flex-col justify-end p-8 transform translate-y-2 transition-transform duration-500 group-hover:translate-y-0">
                     <div className="mb-4 w-fit rounded-full bg-brand-primary/95 backdrop-blur-sm px-4 py-1.5 text-[10px] font-black uppercase tracking-widest text-white shadow-lg">
-                      {destination.tourCount} PREMIUM PACKAGES
+                      {(destination.tourCount || 0)} PREMIUM PACKAGES
                     </div>
                     <h3 className="mb-4 text-3xl font-black leading-tight text-white">{destination.name}</h3>
                     <span className="flex items-center gap-2 text-sm font-black text-white/90 group-hover:text-white transition-colors">

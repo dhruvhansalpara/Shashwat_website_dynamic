@@ -43,7 +43,7 @@ export default function FaqAccordionList({
           <button
             onClick={() => onToggle(index)}
             className={`w-full flex items-center justify-between px-8 py-7 text-left transition-colors ${
-              activeIndex === index ? 'bg-[#004A7C] text-white' : 'bg-white text-gray-900'
+              activeIndex === index ? 'bg-brand-secondary text-white' : 'bg-white text-gray-900'
             }`}
           >
             <div className="flex items-center gap-4">

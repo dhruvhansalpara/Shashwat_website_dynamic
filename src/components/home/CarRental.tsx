@@ -1,12 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { Users, Briefcase, Settings, ArrowRight, Star } from 'lucide-react';
+import { Users, Briefcase, Settings, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { cars } from '../../data/cars';
+import { fetchCars } from '../../utils/api';
 import { formatInr } from '../../utils/currency';
 import SafeImage from '../shared/SafeImage';
+import { Car } from '../../types';
 
 export default function CarRental() {
+  const [cars, setCars] = useState<Car[]>([]);
+
+  useEffect(() => {
+    const loadCars = async () => {
+      try {
+        const dbCars = await fetchCars();
+        setCars(dbCars || []);
+      } catch (err) {
+        console.error('Failed to fetch cars', err);
+      }
+    };
+    loadCars();
+  }, []);
+
   return (
     <section className="home-section-soft home-section-white py-24">
       <div className="site-container">

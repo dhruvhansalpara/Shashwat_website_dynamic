@@ -37,7 +37,7 @@ export default function FaqCategorySidebar({
             <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm mb-4">
               <MessageSquare className="w-6 h-6 text-brand-primary" />
             </div>
-            <h3 className="text-xl font-black text-[#05445E] mb-3 leading-tight">
+            <h3 className="text-xl font-black text-brand-dark mb-3 leading-tight">
               {FAQ_SUPPORT_CARD.title}
             </h3>
             <a

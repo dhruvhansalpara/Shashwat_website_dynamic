@@ -45,7 +45,7 @@ export default function FAQ() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-display font-black text-[#05445E] mb-6 tracking-tight"
+            className="text-4xl md:text-5xl lg:text-6xl font-display font-black text-brand-dark mb-6 tracking-tight"
           >
             Frequently Asked Questions
           </motion.h2>
@@ -77,7 +77,7 @@ export default function FAQ() {
                 <button
                   onClick={() => setActiveIndex(activeIndex === index ? null : index)}
                   className={`w-full flex items-center justify-between px-8 py-6 text-left transition-colors ${
-                    activeIndex === index ? 'bg-[#004A7C] text-white' : 'bg-white text-gray-900 group'
+                    activeIndex === index ? 'bg-brand-secondary text-white' : 'bg-white text-gray-900 group'
                   }`}
                 >
                   <div className="flex items-center gap-4">
@@ -124,7 +124,7 @@ export default function FAQ() {
                   <MessageSquare className="w-6 h-6 text-brand-primary" />
                   <div className="absolute -top-1 -right-1 w-3 h-3 bg-brand-primary rounded-full border-2 border-white animate-pulse" />
                 </div>
-                <h3 className="text-2xl font-black text-[#05445E] mb-4 leading-tight">
+                <h3 className="text-2xl font-black text-brand-dark mb-4 leading-tight">
                   Let us guide you—reach out anytime.
                 </h3>
                 <a href={CONTACT_MAILTO} className="block break-all font-bold text-brand-primary hover:underline">
@@ -139,10 +139,10 @@ export default function FAQ() {
                 
                 <Link
                   to="/faq"
-                  className="flex items-center justify-between bg-[#8BC34A] hover:bg-[#7CB342] text-white p-1 rounded-full group transition-all transform hover:scale-105 active:scale-95 shadow-lg shadow-[#8BC34A]/20"
+                  className="flex items-center justify-between bg-brand-accent hover:opacity-90 text-white p-1 rounded-full group transition-all transform hover:scale-105 active:scale-95 shadow-lg"
                 >
                   <span className="pl-6 font-bold uppercase text-xs tracking-widest">Read All Faq's</span>
-                  <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-[#8BC34A] transition-transform group-hover:translate-x-0.5">
+                  <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-brand-accent transition-transform group-hover:translate-x-0.5">
                     <ArrowRight className="w-5 h-5" />
                   </div>
                 </Link>

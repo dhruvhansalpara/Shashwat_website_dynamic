@@ -229,29 +229,44 @@ function findCategoryImage(category: string | undefined) {
   return Object.entries(CATEGORY_IMAGE_MAP).find(([key]) => normalizedCategory.includes(key))?.[1];
 }
 
+export function normalizeImagePath(path: string | undefined): string {
+  if (!path) return '';
+  if (path.startsWith('http') || path.startsWith('/') || path.startsWith('data:')) return path;
+  if (path.startsWith('ds_')) return `${PUBLIC_BASE}destinations/${path}`;
+  return path;
+}
+
 export function getDestinationDisplayImage(destination: Pick<Destination, 'name' | 'toursRegion' | 'image'>) {
+  const norm = normalizeImagePath(destination.image);
+  if (norm && !norm.includes('unsplash.com') && !norm.includes('picsum.photos')) {
+    // If user provided a specific local asset or custom URL, use it first
+    return norm;
+  }
+
   return (
     findRegionImage(destination.toursRegion, destination.name) ||
     findRegionImage(destination.name, destination.name) ||
-    destination.image
+    norm
   );
 }
 
 export function getTourDisplayImage(tour: Pick<Tour, 'title' | 'location' | 'searchRegion' | 'category' | 'image'>) {
+  const norm = normalizeImagePath(tour.image);
   const searchableText = [tour.title, tour.location, tour.searchRegion, tour.category].map(normalize).join(' ');
   return (
     findMatchedImage(searchableText) ||
     findRegionImage(tour.searchRegion, tour.title) ||
     findCategoryImage(tour.category) ||
-    tour.image
+    norm
   );
 }
 
 export function getDestinationFallbackImage(destination: Pick<Destination, 'name' | 'toursRegion' | 'image'>) {
+  const norm = normalizeImagePath(destination.image);
   return (
     findRegionImage(destination.toursRegion, destination.name) ||
     findRegionImage(destination.name, destination.name) ||
-    destination.image
+    norm
   );
 }
 

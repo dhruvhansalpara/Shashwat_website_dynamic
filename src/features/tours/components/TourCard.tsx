@@ -54,15 +54,18 @@ export default function TourCard({ tour, index, variant = 'listing' }: TourCardP
             isHomeVariant ? 'min-h-64' : 'min-h-[16rem]'
           }`}
         />
-        <div className="absolute top-4 left-4 flex flex-col gap-2">
+        <div className="absolute top-6 left-6 z-20 flex flex-col gap-2">
           {isHomeVariant && tour.isPopular && (
-            <span className="bg-brand-primary text-white px-3 py-1 rounded-full text-[10px] uppercase font-black tracking-widest shadow-lg shadow-brand-primary/20">
+            <span className="bg-brand-primary text-white px-3 py-1.5 rounded-full text-[10px] uppercase font-black tracking-widest shadow-lg shadow-brand-primary/20">
               Popular
             </span>
           )}
-          <span className="bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] uppercase font-bold text-gray-900 tracking-wider w-fit">
-            {tour.category}
-          </span>
+        </div>
+
+        <div className="absolute top-6 right-6 z-20">
+          <div className="rounded-full bg-white/92 px-4 py-2 text-[10px] font-black uppercase tracking-widest text-gray-900 shadow-lg shadow-black/10 backdrop-blur-sm">
+            {tour.category || 'Holiday'}
+          </div>
         </div>
       </div>
 

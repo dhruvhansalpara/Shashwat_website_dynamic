@@ -29,8 +29,10 @@ export default function Navbar() {
     <header className="fixed top-0 left-0 right-0 z-50">
       <nav
         className={cn(
-          'transition-all duration-300 py-4 font-sans',
-          (isScrolled || location.pathname !== '/') ? 'bg-gray-900/95 backdrop-blur-md shadow-lg border-b border-white/5' : 'bg-transparent'
+          'transition-all duration-300 py-4 font-sans border-b',
+          (isScrolled || location.pathname !== '/') 
+            ? 'bg-white/95 backdrop-blur-md shadow-sm border-gray-100' 
+            : 'bg-transparent border-transparent'
         )}
       >
       <div className="site-container">
@@ -38,12 +40,12 @@ export default function Navbar() {
           {/* Logo */}
           <Link
             to="/"
-            className="flex items-center cursor-pointer group rounded-lg bg-white p-1.5 shadow-lg border border-white/10 ring-1 ring-black/5 transition-all duration-300 hover:shadow-brand-primary/20 hover:scale-[1.02]"
+            className="flex items-center cursor-pointer group transition-all duration-300 hover:scale-[1.02]"
           >
             <img
               src={BRAND_LOGO_PATH}
               alt="Shashwat Holidays"
-              className="h-12 sm:h-14 w-auto object-contain"
+              className="h-14 lg:h-18 w-auto object-contain"
             />
           </Link>
 
@@ -55,7 +57,7 @@ export default function Navbar() {
                 to={item.href}
                 className={cn(
                   'text-sm xl:text-[15px] font-black uppercase tracking-[0.16em] transition-all hover:text-brand-primary',
-                  'text-white',
+                  (isScrolled || location.pathname !== '/') ? 'text-gray-900' : 'text-white',
                   location.pathname === item.href && "text-brand-primary"
                 )}
               >
@@ -68,7 +70,10 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-6">
             <a
               href={`tel:${CONTACT_PHONE_TEL}`}
-              className="flex items-center gap-2 text-sm font-black uppercase tracking-[0.14em] text-white/90 transition-colors hover:text-brand-primary"
+              className={cn(
+                "flex items-center gap-2 text-sm font-black uppercase tracking-[0.14em] transition-colors hover:text-brand-primary",
+                (isScrolled || location.pathname !== '/') ? 'text-gray-700' : 'text-white/90'
+              )}
             >
               <Phone className="w-3.5 h-3.5 shrink-0 text-brand-primary" />
               <span>{CONTACT_PHONE_DISPLAY}</span>
@@ -81,9 +86,9 @@ export default function Navbar() {
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? (
-              <X className="w-6 h-6 text-white" />
+              <X className={cn("w-6 h-6", (isScrolled || location.pathname !== '/') ? 'text-gray-900' : 'text-white')} />
             ) : (
-              <Menu className="w-6 h-6 text-white" />
+              <Menu className={cn("w-6 h-6", (isScrolled || location.pathname !== '/') ? 'text-gray-900' : 'text-white')} />
             )}
           </button>
         </div>
@@ -96,22 +101,22 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-gray-900 border-t border-white/10 mt-4 overflow-hidden"
+            className="lg:hidden bg-white border-t border-gray-100 mt-4 overflow-hidden"
           >
             <div className="px-4 py-8 flex flex-col gap-6">
               {MAIN_NAV_ITEMS.map((item) => (
                 <Link
                   key={item.label}
                   to={item.href}
-                  className="text-xl font-black uppercase tracking-widest text-white hover:text-brand-primary transition-colors"
+                  className="text-xl font-black uppercase tracking-widest text-gray-900 hover:text-brand-primary transition-colors"
                 >
                   {item.label}
                 </Link>
               ))}
-              <div className="h-px bg-white/10 w-full" />
+              <div className="h-px bg-gray-100 w-full" />
               <a
                 href={`tel:${CONTACT_PHONE_TEL}`}
-                className="flex items-center gap-3 font-bold text-white/70 transition-colors hover:text-brand-primary"
+                className="flex items-center gap-3 font-bold text-gray-500 transition-colors hover:text-brand-primary"
               >
                 <Phone className="w-4 h-4 shrink-0 text-brand-primary" />
                 <span>{CONTACT_PHONE_DISPLAY}</span>

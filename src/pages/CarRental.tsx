@@ -1,27 +1,53 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import EnquiryModal from '../features/enquiry/components/EnquiryModal';
-import { cars } from '../data/cars';
 import { CAR_FILTER_TABS } from '../features/cars/constants';
 import CarCard from '../features/cars/components/CarCard';
 import CarFeatureHighlights from '../features/cars/components/CarFeatureHighlights';
 import CarFilterTabs from '../features/cars/components/CarFilterTabs';
 import CarPageHero from '../features/cars/components/CarPageHero';
 import { formatInr } from '../utils/currency';
+import { fetchCars } from '../utils/api';
+import { Car } from '../types';
 
 export default function CarRentalPage() {
   const [tab, setTab] = useState<(typeof CAR_FILTER_TABS)[number]>('All');
   const [selectedCarId, setSelectedCarId] = useState<string | null>(null);
+  const [cars, setCars] = useState<Car[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadCars = async () => {
+      try {
+        const dbCars = await fetchCars();
+        setCars(dbCars || []);
+      } catch (err) {
+        console.error('Failed to fetch cars', err);
+        setCars([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadCars();
+  }, []);
 
   const filteredCars = useMemo(() => {
     if (tab === 'All') return cars;
     return cars.filter((car) => car.category === tab);
-  }, [tab]);
+  }, [tab, cars]);
 
   const selectedCar = useMemo(
     () => cars.find((car) => car.id === selectedCarId) ?? null,
-    [selectedCarId]
+    [selectedCarId, cars]
   );
+
+  if (loading) {
+    return (
+      <div className="page-shell min-h-screen flex items-center justify-center pt-32">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="page-shell min-h-screen pt-32 pb-24">

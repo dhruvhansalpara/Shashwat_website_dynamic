@@ -196,13 +196,13 @@ export default function About() {
                   transition={{ delay: index * 0.08, duration: 0.45 }}
                   className={`px-6 py-6 ${index !== 3 ? 'xl:border-r xl:border-brand-accent/20' : ''} ${index > 0 ? 'md:border-t-0' : ''}`}
                 >
-                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-3xl bg-brand-accent/10 text-[#9a5a23]">
+                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-3xl bg-brand-accent/10 text-brand-accent">
                     <item.icon className="h-8 w-8" />
                   </div>
-                  <h3 className="mb-4 text-2xl font-black tracking-tight text-[#6d431d]">
+                  <h3 className="mb-4 text-2xl font-black tracking-tight text-brand-dark">
                     {item.title}
                   </h3>
-                  <p className="max-w-xs text-base font-medium leading-relaxed text-[#8c7a6d]">
+                  <p className="max-w-xs text-base font-medium leading-relaxed text-gray-500">
                     {item.description}
                   </p>
                 </motion.div>

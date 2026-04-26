@@ -60,3 +60,32 @@ export async function deletePackage(id: string) {
   if (!response.ok) throw new Error('Failed to delete package');
   return response.json();
 }
+
+export async function fetchCars() {
+  const response = await fetch('/api/cars');
+  if (!response.ok) throw new Error('Failed to fetch cars');
+  const data = await response.json();
+  return data.map((car: any) => ({
+    ...car,
+    features: typeof car.features === 'string' ? JSON.parse(car.features) : car.features,
+    isAvailable: !!car.isAvailable
+  }));
+}
+
+export async function saveCar(car: any) {
+  const response = await fetch('/api/cars', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(car)
+  });
+  if (!response.ok) throw new Error('Failed to save car');
+  return response.json();
+}
+
+export async function deleteCar(id: string) {
+  const response = await fetch(`/api/cars/${id}`, {
+    method: 'DELETE'
+  });
+  if (!response.ok) throw new Error('Failed to delete car');
+  return response.json();
+}

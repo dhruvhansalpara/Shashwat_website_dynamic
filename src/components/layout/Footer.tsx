@@ -13,7 +13,7 @@ import { BRAND_LOGO_PATH } from '../../config/branding';
 
 export default function Footer() {
   return (
-    <footer className="relative z-[60] isolate bg-[linear-gradient(180deg,#0f172a,#111827)] text-white pt-24 pb-12">
+    <footer className="relative z-[60] isolate bg-brand-dark text-white pt-24 pb-12">
       <div className="site-container">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
           {/* About */}
@@ -29,10 +29,10 @@ export default function Footer() {
               Shashwat is a premium travel agency dedicated to providing curated local experiences and luxury escapes worldwide.
             </p>
             <div className="flex gap-4">
-              <SocialIcon icon={<Facebook className="w-5 h-5" />} label="Shashwat Holidays on Instagram" />
-              <SocialIcon icon={<Twitter className="w-5 h-5" />} label="Shashwat Holidays on Instagram" />
+              <SocialIcon icon={<Facebook className="w-5 h-5" />} label="Shashwat Holidays on Facebook" />
+              <SocialIcon icon={<Twitter className="w-5 h-5" />} label="Shashwat Holidays on Twitter" />
               <SocialIcon icon={<Instagram className="w-5 h-5" />} label="Shashwat Holidays on Instagram" />
-              <SocialIcon icon={<Linkedin className="w-5 h-5" />} label="Shashwat Holidays on Instagram" />
+              <SocialIcon icon={<Linkedin className="w-5 h-5" />} label="Shashwat Holidays on LinkedIn" />
             </div>
           </div>
 
